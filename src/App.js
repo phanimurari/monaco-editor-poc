@@ -1,25 +1,44 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import MonacoEditor from 'react-monaco-editor';
+import * as monacoEditor from 'monaco-editor/esm/vs/editor/editor.api';
+import { languageConfiguration } from './jsx';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class CodeEditor extends React.Component {
+    constructor(props) {
+        super(props);
+        this.editor = null;
+    }
+
+    editorDidMount = (editor, monaco) => {
+        this.editor = editor;
+        // ensure the language is registered before setting configuration
+        monacoEditor.languages.register({ id: 'javascript' });
+        monacoEditor.languages.setLanguageConfiguration('javascript', languageConfiguration);
+    };
+
+    render() {
+        const options = {
+            selectOnLineNumbers: true,
+            roundedSelection: false,
+            readOnly: false,
+            cursorStyle: 'line',
+            automaticLayout: false,
+        };
+        return (
+            <div>
+                <MonacoEditor
+                    width="800"
+                    height="600"
+                    language="javascript"
+                    theme="vs-dark"
+                    value={this.props.code}
+                    options={options}
+                    onChange={this.props.onChange}
+                    editorDidMount={this.editorDidMount}
+                />
+            </div>
+        );
+    }
 }
 
-export default App;
+export default CodeEditor;
