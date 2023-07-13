@@ -11,7 +11,7 @@ class CodeEditor extends React.Component {
 
     editorDidMount = (editor, monaco) => {
         this.editor = editor;
-        // ensure the language is registered before setting configuration
+      
         monacoEditor.languages.register({ id: 'javascript' });
         monacoEditor.languages.setLanguageConfiguration('javascript', languageConfiguration);
     };
@@ -42,3 +42,5 @@ class CodeEditor extends React.Component {
 }
 
 export default CodeEditor;
+
+
